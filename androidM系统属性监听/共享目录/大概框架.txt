@@ -1,0 +1,13 @@
+﻿
+app  调用 SysPropertiesManager mSysPropertiesManager = mContext.getSystemService(
+                Context.PROPERTY_SERVICE);
+
+framework层 提供 SysPropertiesManager 注册SysPropertiesListener.stub 和直接listener 基类向上提供
+
+				
+C++ native 层 提供syspropserver binder服务
+
+
+sysprobin 监听管道通过native 层的syspropserver  binder 服务向上notify。 这里可以做属性判断处理逻辑
+
+init 在监听到写属性时，判断打开管道跨进程写被改变的属性值                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

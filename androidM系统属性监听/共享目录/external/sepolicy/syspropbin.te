@@ -1,0 +1,49 @@
+# healthd seclabel is specified in init.rc since
+# it lives in the rootfs and has no unique file type.
+type syspropbin, domain;
+
+# Write to /dev/kmsg
+allow syspropbin kmsg_device:chr_file rw_file_perms;
+
+
+allow syspropbin self:capability { net_admin sys_tty_config };
+wakelock_use(syspropbin)
+allow syspropbin self:netlink_kobject_uevent_socket create_socket_perms;
+binder_use(syspropbin)
+binder_service(syspropbin)
+binder_call(syspropbin, system_server)
+
+# Write to state file.
+# TODO:  Split into a separate type?
+allow syspropbin sysfs:file write;
+
+###
+### healthd: charger mode
+###
+
+# Read /sys/fs/pstore/console-ramoops
+# Don't worry about overly broad permissions for now, as there's
+# only one file in /sys/fs/pstore
+allow syspropbin pstorefs:dir r_dir_perms;
+allow syspropbin pstorefs:file r_file_perms;
+
+allow syspropbin graphics_device:dir r_dir_perms;
+allow syspropbin graphics_device:chr_file rw_file_perms;
+allow syspropbin input_device:dir r_dir_perms;
+allow syspropbin input_device:chr_file r_file_perms;
+allow syspropbin tty_device:chr_file rw_file_perms;
+allow syspropbin ashmem_device:chr_file execute;
+allow syspropbin self:process execmem;
+allow syspropbin proc_sysrq:file rw_file_perms;
+allow syspropbin self:capability sys_boot;
+
+
+allow syspropbin system_data_file:fifo_file rw_file_perms;
+allow syspropbin system_file:file rx_file_perms;
+allow syspropbin syspropbin_service:service_manager { add find };
+
+# Healthd needs to tell init to continue the boot
+# process when running in charger mode.
+set_prop(syspropbin, system_prop)
+
+

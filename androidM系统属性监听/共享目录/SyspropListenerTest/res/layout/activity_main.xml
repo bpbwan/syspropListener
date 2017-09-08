@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="1920px"
+    android:layout_height="560px" >
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:layout_marginLeft="82px"
+        android:layout_marginTop="122px"
+        android:text="Button" />
+
+</FrameLayout>
